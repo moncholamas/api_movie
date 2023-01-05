@@ -3,6 +3,7 @@ LABEL maintainer="moncholamas"
 
 RUN a2enmod rewrite
 
+EXPOSE 80
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 
