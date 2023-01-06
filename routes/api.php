@@ -21,3 +21,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::get('/test', [UserController::class, 'index']);
+
+// endpoints para registro y login
+Route::post('/register', [App\Http\Controllers\API\AuthController::class, 'register']);
+Route::post('/login', [App\Http\Controllers\API\AuthController::class, 'login']);
+
+Route::group(['middleware' => ['auth:sanctum']], function(){
+    Route::get('/logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
+});
