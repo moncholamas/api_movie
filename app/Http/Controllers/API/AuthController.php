@@ -38,12 +38,9 @@ class AuthController extends Controller
     }
 
     public function login(Request $request){
-        // solo obtengo el email y el password
-        $credentials = $request->only('email','password');
-
-        $validator = Validator::make($credentials,[
+        $validator = Validator::make( $request->only('email','password'), [
             'password' => 'required|string|min:8',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255',
         ]);
 
         if ($validator->fails()) {
