@@ -49,14 +49,20 @@ class MovieController extends Controller
             return $maspopulares;
         }
 
-        $maspopulares = Rating::select('title', 'gender')
+        $maspopulares = Rating::select('title', 'gender','id_movie')
             ->selectRaw('AVG(rating) as rate')
             ->join('movies','ratings_user_movie.id_movie','=','movies.id')
             ->groupBy('ratings_user_movie.id_movie')
+            ->where('movies.deleted_at')
             ->limit(5)
             ->orderBy('rate', 'DESC')
             ->get()
         ;
         return $maspopulares;
+    }
+
+    public function remove (Request $request, $id_movie){
+        Movie::where('id', $id_movie)->delete(); // soft delete
+        return response()->json(['msg' => 'pelicula borrada correctamente']);
     }
 }

@@ -40,4 +40,6 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/movies/rate/{id_movie}',[MovieController::class, 'rateMovie']);
 
     Route::get('/movies/rating', [MovieController::class, 'rating']);
+
+    Route::delete('/movies/{id_movie}',[MovieController::class, 'remove']);
 });
