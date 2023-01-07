@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\MovieController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,8 +26,13 @@ Route::get('/test', [UserController::class, 'index']);
 
 // endpoints para registro y login
 Route::post('/register', [App\Http\Controllers\API\AuthController::class, 'register']);
-Route::post('/login', [App\Http\Controllers\API\AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function(){
-    Route::get('/logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
+
+    // cerrar sesion
+    Route::get('/logout', [AuthController::class, 'logout']);
+
+    // endpoints movies
+    Route::get('/movies', [MovieController::class, 'getAllMovies']);
 });
