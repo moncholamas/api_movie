@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('ratings_user_movie', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->timestamps();
-            $table->integer('rating')->range(1,5); // recibe valores de 1 a 5
-            $table->text('commentary', 400);
+            $table->integer('rating')->range(1,5)->nullable(); // recibe valores de 1 a 5
+            $table->text('commentary', 400)->nullable();
             $table->boolean('favorite')->default(false);
             // referencia al usuario
             $table->unsignedBigInteger('id_user');

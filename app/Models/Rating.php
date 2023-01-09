@@ -12,11 +12,11 @@ class Rating extends Model
     use HasFactory;
     
     public function usesrs(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id_movies', 'id');
     }
 
     public function movies(){
-        return $this->belongsTo(Movie::class);
+        return $this->belongsTo(Movie::class, 'id_movies', 'id');
     }
 
     protected $table = 'ratings_user_movie';

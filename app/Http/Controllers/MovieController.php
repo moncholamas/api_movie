@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Validator;
 
 class MovieController extends Controller
 {
+    private $generos = ['comedia', 'drama', 'terror', 'infantil', 'documentales'];
     // devuelve todas las peliculas
-
     public function getAllMovies(Request $request)
     {
         $movies = Movie::select('id', 'title', 'gender', 'created_at')->orderBy('created_at', 'DESC')->get();
@@ -23,28 +23,31 @@ class MovieController extends Controller
             ->json($movies);
     }
 
-
+    // borra una pelicula por id
     public function remove(Request $request, $id_movie)
     {
         Movie::where('id', $id_movie)->delete(); // soft delete
         return response()->json(['msg' => 'pelicula borrada correctamente']);
     }
 
+    // agrega una nueva pelicula
     public function uploadMovie(Request $request)
     {
+        $user = Auth::user();
+
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:100',
             'description' => 'string|max:400|',
-            'gender' => ['required', Rule::in(['comedia', 'drama', 'terror', 'infantil', 'documentales'])]
+            'gender' => ['required', Rule::in($this->generos)]
         ]);
 
 
         if ($validator->fails()) {
+            // personalizar las respuestas
             return response()->json(['error' => $validator->messages()], 400);
         }
 
-        $user = Auth::user();
-
+        // genera una nueva instancia de movie
         $movie = new Movie;
         $movie->title = $request->title;
         $movie->description = $request->description;
@@ -56,12 +59,14 @@ class MovieController extends Controller
             ->json($movie);
     }
 
-    public function updateMovie(Request $request, $id_movie){
+    public function updateMovie(Request $request, $id_movie)
+    {
         $user = Auth::user();
+
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:100',
             'description' => 'string|max:400|',
-            'gender' => ['required', Rule::in(['comedia', 'drama', 'terror', 'infantil', 'documentales'])]
+            'gender' => ['required', Rule::in($this->generos)]
         ]);
 
         if ($validator->fails()) {
@@ -70,8 +75,8 @@ class MovieController extends Controller
 
 
         $movie = Movie::find($id_movie);
-        
-        if ( ! $movie ) {
+
+        if (!$movie) {
             return response()->json(['not_found' => 'no existe ninguna pelicula con el id ingresado']);
         }
 
@@ -88,15 +93,15 @@ class MovieController extends Controller
     {
         $user = Auth::user();
         $alldetails = Movie::find($id_movie);
-        $request->path();
+        $request->path(); // existe un endpoint privado que entrega mas informacion
 
         if (!$alldetails) {
             // si una pelicula con ese id
             return response()->json(['not_found' => 'no existe ninguna pelicula con el id ingresado']);
         }
 
-        $detallesRating =Rating::where('id_movie', $id_movie)->where('id_user', $user->id);        
-        $alldetails->rating= $detallesRating;
+        $detallesRating = Rating::where('id_movie', $id_movie)->where('id_user', $user->id)->first();
+        $alldetails->rating = $detallesRating;
 
         // verifica si es propietario de la pelicula 
         if (!str_contains($request->path(), 'public')) {
@@ -113,9 +118,13 @@ class MovieController extends Controller
         return response()->json($alldetails);
     }
 
-    public function getFavorites(){
-        $user = Auth::user();
-        $favorites = Rating::where([['id_user', '=',$user->id],['favorite','=',true]]);
+    public function getFavorites()
+    {
+        $favorites = Movie::whereHas('ratings', function( $q ) {
+            $user = Auth::user();
+            $q->where(['favorite' => true])->where(['id_user' => $user->id]);
+        }) ->get();
+
         return response()->json($favorites);
     }
 
@@ -123,31 +132,29 @@ class MovieController extends Controller
     public function setFavorite(Request $request, $id_movie)
     {
         $user = Auth::user();
-        $favorite = true; 
 
-        $movie = Movie::where('id', $id_movie)->first();
+        $movie = Movie::find($id_movie);
         if (!$movie) {
             return response()->json(['msg' => 'no existe pelicula con el id ingresado']);
         }
-    
-
-        if ($request->has('remove')) {
-            $favorite = false;
-        } 
 
         // verifica si ya se dejo un comentario o un puntaje
-        $valoracion = Rating::where([ ['id_user','=', $user->id] , ['id_movie','=', $id_movie] ])->get();
+        $valoracion = Rating::where([['id_user', '=', $user->id], ['id_movie', '=', $id_movie]])->get();
+        if ( count($valoracion) === 0) {
 
-        if ( ! $valoracion ) {
             $rating = new Rating;
-            $rating->id_movie = $id_movie;
-            $rating->id_user = $user->id;
-            $rating->favorite = $favorite;
+            $rating->id_movie = (int)$id_movie;
+            $rating->id_user = (int)$user->id;
+            $rating->favorite = (boolean)$request->favorite;
             $rating->save();
-            return response()->json(['msg' => 'actualizada correctamente']);
+
         } else {
-            $valoracion->favorite = $favorite;
-            return response()->json(['msg' => 'actualizada correctamente']);
+
+            $toUpdate = Rating::find($valoracion[0]->id);
+            $toUpdate->favorite = $request->favorite;
+            $toUpdate->save();
+
         }
+        return response()->json(['msg' => 'actualizada correctamente']);
     }
 }

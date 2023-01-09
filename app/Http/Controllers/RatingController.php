@@ -19,8 +19,7 @@ class RatingController extends Controller
         // validar campos
 
         if ($id_movie) {
-
-            $movie = Movie::where('id', $id_movie)->firstOrFail();
+            $movie = Movie::find($id_movie);
             if (!$movie) {
                 return response()->json(['msg' => 'no existe la pelicula seleccionada']);
             }
@@ -32,7 +31,7 @@ class RatingController extends Controller
                 $rating = new Rating;
                 $rating->id_movie = $id_movie;
                 $rating->id_user = $user->id;
-                if ($request->has('rate')) {
+                if ($request->has('rating')) {
                     $rating->rating = $request->rating;
                 }
                 if ($request->has('commentary')) {
@@ -43,14 +42,15 @@ class RatingController extends Controller
             } else {
 
                 // si la valoracion ya existe, solo actualiza los datos
-                if ($request->has('rate')) {
+                if ($request->has('rating')) {
                     $rating->rating = $request->rating;
+                    $rating = Rating::where('id_user', $user->id)->where('id_movie', $id_movie)->update(['rating' => $request->rating]);
                 }
                 if ($request->has('commentary')) {
                     $rating->commentary = $request->commentary;
+                    $rating = Rating::where('id_user', $user->id)->where('id_movie', $id_movie)->update(['commentary' => $request->commentary]);
                 }
 
-                $rating->save();
                 return response()->json($rating);
             }
         } else {
@@ -71,6 +71,7 @@ class RatingController extends Controller
             ->join('movies', 'ratings_user_movie.id_movie', '=', 'movies.id')
             ->groupBy('ratings_user_movie.id_movie')
             ->where('movies.deleted_at')
+            ->where('rating','>', '0')
             ->limit(5)
             ->orderBy('rate', 'DESC')
             ->get();

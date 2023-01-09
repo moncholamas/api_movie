@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('movies', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('title',100);
             $table->string('description',300)->nullable();
             // el genero deberia ser una tabla mas pero simplifico esto con un enum 

@@ -12,15 +12,11 @@ class Movie extends Model
     use HasFactory, SoftDeletes;
     
     public function users(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id_user', 'id');
     }
 
     public function ratings(){
-        return $this->hasMany(Rating::class);
+        return $this->hasMany(Rating::class, 'id_movie', 'id');
     }
     
-    // devuelve el listado de usuarios que puntuaron
-    public function ratings_users(){
-        return $this->ratings->belongsTo(User::class);
-    }
 }
