@@ -44,7 +44,6 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 COPY . /var/www/html
-COPY docker/.env.prod /var/www/html/.env
 WORKDIR /var/www/html/
 
 RUN chown -R www-data:www-data /var/www/html && composer install
