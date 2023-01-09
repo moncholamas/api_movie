@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->integer('rating')->range(1,5); // recibe valores de 1 a 5
             $table->text('commentary', 400);
+            $table->boolean('favorite')->default(false);
             // referencia al usuario
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')
