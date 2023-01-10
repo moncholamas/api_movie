@@ -1,0 +1,411 @@
+{
+	"info": {
+		"_postman_id": "5fe6da49-7a16-44ce-a60c-e7ea2f3695bb",
+		"name": "api_movies",
+		"description": "# Introduction\nPermite ingresar, editar, borrar y listar peliculas\n\n\n# Authentication\nautenticacion con bearer token\n\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15815003"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"runte.allison@example.com\",\n    \"password\": \"unaprueba\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{urlapi}}/login",
+							"protocol": "http",
+							"host": [
+								"{{urlapi}}"
+							],
+							"path": [
+								"login"
+							]
+						},
+						"description": "login de usuarios"
+					},
+					"response": [
+						{
+							"name": "Default",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://apimovie-production.up.railway.app/api/login",
+									"protocol": "https",
+									"host": [
+										"apimovie-production",
+										"up",
+										"railway",
+										"app"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "logout",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "1|7ltnVe2vplBGMilNZTIwOpyXt4vV7GWGbE7bDhuN",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"correo@ejemplo2.com\",\n    \"password\": \"unaprueba\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{urlapi}}/logout",
+							"protocol": "http",
+							"host": [
+								"{{urlapi}}"
+							],
+							"path": [
+								"logout"
+							]
+						},
+						"description": "login de usuarios"
+					},
+					"response": [
+						{
+							"name": "Default",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://apimovie-production.up.railway.app/api/login",
+									"protocol": "https",
+									"host": [
+										"apimovie-production",
+										"up",
+										"railway",
+										"app"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"correo@ejemplo.com\",\n    \"name\" : \"manuel\",\n    \"password\": \"unaprueba\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{urlapi}}/register",
+							"protocol": "http",
+							"host": [
+								"{{urlapi}}"
+							],
+							"path": [
+								"register"
+							]
+						},
+						"description": "registro de usuarios"
+					},
+					"response": [
+						{
+							"name": "Default",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://apimovie-production.up.railway.app/api/register",
+									"protocol": "https",
+									"host": [
+										"apimovie-production",
+										"up",
+										"railway",
+										"app"
+									],
+									"path": [
+										"api",
+										"register"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Movies",
+			"item": [
+				{
+					"name": "get all movies",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "23|QXiVUb16JknqEY7yKPpFCe2ib3yTz1wLwFjZAozu",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{urlapi}}/movies/",
+							"protocol": "https",
+							"host": [
+								"{{urlapi}}"
+							],
+							"path": [
+								"movies",
+								""
+							]
+						},
+						"description": "registro de usuarios"
+					},
+					"response": []
+				},
+				{
+					"name": "remove",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "23|QXiVUb16JknqEY7yKPpFCe2ib3yTz1wLwFjZAozu",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rating\": 4,\n    \"commentary\" : \"me parecio muy buena\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{urlapi}}/movies/5",
+							"protocol": "http",
+							"host": [
+								"{{urlapi}}"
+							],
+							"path": [
+								"movies",
+								"5"
+							]
+						},
+						"description": "registro de usuarios"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rate",
+			"item": [
+				{
+					"name": "rate movie",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "23|QXiVUb16JknqEY7yKPpFCe2ib3yTz1wLwFjZAozu",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rating\": 4,\n    \"commentary\" : \"me parecio muy buena\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{urlapi}}/movies/rate?movie=123123",
+							"protocol": "https",
+							"host": [
+								"{{urlapi}}"
+							],
+							"path": [
+								"movies",
+								"rate"
+							],
+							"query": [
+								{
+									"key": "movie",
+									"value": "123123"
+								}
+							]
+						},
+						"description": "registro de usuarios"
+					},
+					"response": []
+				},
+				{
+					"name": "rating",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "23|QXiVUb16JknqEY7yKPpFCe2ib3yTz1wLwFjZAozu",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rating\": 4,\n    \"commentary\" : \"me parecio muy buena\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{urlapi}}/movies/rate?movie=1",
+							"protocol": "https",
+							"host": [
+								"{{urlapi}}"
+							],
+							"path": [
+								"movies",
+								"rate"
+							],
+							"query": [
+								{
+									"key": "movie",
+									"value": "1"
+								}
+							]
+						},
+						"description": "registro de usuarios"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "urlapi",
+			"value": "apimovie-production.up.railway.app/api",
+			"type": "string"
+		}
+	]
+}

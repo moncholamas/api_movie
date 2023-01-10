@@ -22,6 +22,7 @@ class AuthController extends Controller
         
     
         if ($validator->fails()) {
+            // personalizar mensajes de error
             return response()->json(['error' => $validator->messages()], 400);
         }
 
@@ -54,7 +55,7 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $user = User::where('email', $request['email'])->firstOrFail();
+        $user = User::where('email', $request['email'])->first();
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
